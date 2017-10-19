@@ -1,2 +1,2 @@
 # snake
-C++ snake implementation using C++
+C++ snake implementation using FLTK graphics library
