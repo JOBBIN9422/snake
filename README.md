@@ -1,2 +1,2 @@
-# snake
-C++ snake implementation using FLTK graphics library
+# :b:nake
+:b:++ :b:nake implementation using FLTK graphics library
