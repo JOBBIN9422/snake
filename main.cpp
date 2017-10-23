@@ -18,16 +18,14 @@ void gameUpdate(void* game)
 
 int main(int argc, char* argv[])
 {
-	if (argc < 2)
-	{
-		cout << "Usage: ./game <time interval (seconds)>" << endl;
-		return 1;
-	}
-	else
+	int numSegments = 1;
+	if (argc > 1)
 	{
 		timeInterval = stod(argv[1]);
+		numSegments = stoi(argv[2]);
 	}
-	Snake* game = new Snake(1, 300, 300);
+	
+	Snake* game = new Snake(numSegments, 300, 300);
 	Fl::add_timeout(timeInterval, gameUpdate, game);
 	return Fl::run();
 }

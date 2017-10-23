@@ -1,5 +1,6 @@
 #pragma once 
 #include "segment.h"
+#include "food.h"
 #include <vector>
 #include <FL/Fl_Double_Window.H>
 #include <queue>
@@ -12,10 +13,13 @@ class Snake : public Fl_Double_Window
 		std::queue<std::string> buffer; //input buffer 
 		
 		int startX, startY;			//starting position
-		int size;					//number of segments in the snake 
+		int maxBufferSize;			//max number of inputs to store in buffer
+		
 		bool dead;					//Triggered on collision with self/walls
-		bool input; 
+		
 		std::string direction;		//The snake's current heading (change to enum?)
+
+		Food* food;					//food piece for the game board
 
 	public:
 		Snake(int numSegments, int x, int y); //constructor

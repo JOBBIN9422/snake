@@ -1,8 +1,8 @@
 #include "snake.h"
 #include "food.h"
 using namespace std;
-Food* food;
-Snake::Snake(int numSegments, int x, int y) : startX(x), startY(y), 
+
+Snake::Snake(int numSegments, int x, int y) : startX(x), startY(y), maxBufferSize(3), 
 Fl_Double_Window(800, 600, "shitty snake game"), direction("LEFT"), dead(false)
 {
 	this->color(FL_BLACK);
@@ -12,6 +12,7 @@ Fl_Double_Window(800, 600, "shitty snake game"), direction("LEFT"), dead(false)
 		Segment* bodySeg = new Segment(x + (20*i), y);
 		body.push_back(bodySeg);
 	}
+	
 	food = new Food(0, 0);
 	food->move(this->w(), this->h()); //randomize initial food position
 	this->show();
@@ -27,6 +28,7 @@ void Snake::addSegment()
 	//get tail pos
 	int tailX = body.back()->getX();
 	int tailY = body.back()->getY();
+	
 	Segment* newSeg = new Segment(tailX, tailY);
 	this->add(newSeg);	//add the segment as a child of the window so it is drawn
 	body.push_back(newSeg);
@@ -58,7 +60,6 @@ void Snake::checkCollision()
 	//check for out of bounds
 	if(headX >= this->w() || headX < 0 || headY >= this->h() || headY < 0)
 	{
-		//cout << "out of bounds" << endl;
 		this->dead = true;
 	}
 }
@@ -87,7 +88,7 @@ void Snake::move()
 	else
 		moveMe->move(headX + 20, headY);
 	//insert the last tail segment as the new head	
-	body.insert(body.begin(), moveMe);	
+	body.insert(body.begin(), moveMe);
 	return;
 }
 
@@ -98,9 +99,10 @@ int Snake::handle(int event)
 	switch(event)
 	{
 		case FL_KEYDOWN:
+			
 			if(Fl::event_key() == FL_Up)
 			{	//note that the snake cannot reverse directions (eat itself)
-				if(this->direction != "DOWN" && buffer.size() < 2)
+				if(this->direction != "DOWN" && buffer.size() < maxBufferSize)
 				{
 					buffer.push("UP"); //add player input to input buffer
 				}
@@ -108,7 +110,7 @@ int Snake::handle(int event)
 			}
 			else if(Fl::event_key() == FL_Down)
 			{
-				if(this->direction != "UP" && buffer.size() < 2)
+				if(this->direction != "UP" && buffer.size() < maxBufferSize)
 				{
 					buffer.push("DOWN");
 				}
@@ -116,7 +118,7 @@ int Snake::handle(int event)
 			}
 			else if(Fl::event_key() == FL_Left)
 			{
-				if(this->direction != "RIGHT" && buffer.size() < 2)
+				if(this->direction != "RIGHT" && buffer.size() < maxBufferSize)
 				{
 					buffer.push("LEFT");
 				}
@@ -124,7 +126,7 @@ int Snake::handle(int event)
 			}
 			else if(Fl::event_key() == FL_Right)
 			{
-				if(this->direction != "LEFT" && buffer.size() < 2)
+				if(this->direction != "LEFT" && buffer.size() < maxBufferSize)
 				{
 					buffer.push("RIGHT");
 				}
