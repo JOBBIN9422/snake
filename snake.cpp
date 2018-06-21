@@ -1,10 +1,17 @@
 #include "snake.h"
 #include "food.h"
+
+#include <FL/Fl_Box.H>
+#include <FL/Fl_JPEG_Image.H>
 using namespace std;
+//Fl_JPEG_Image background("nicc.jpeg");
 
 Snake::Snake(int numSegments, int x, int y) : startX(x), startY(y), maxBufferSize(3), 
 Fl_Double_Window(800, 600, "shitty snake game"), direction("LEFT"), dead(false)
-{
+{	/*
+	Fl_Box* bgImage = new Fl_Box(0, 0, 800, 600);
+	bgImage->image(background);
+	*/
 	this->color(FL_BLACK);
 	srand(time(NULL));
 	for (int i = 0; i < numSegments; i++)
@@ -96,42 +103,47 @@ int Snake::getSize() { return body.size(); }
 
 int Snake::handle(int event)
 {
+    int HKey = 104;
+    int JKey = 106;
+    int KKey = 107;
+    int LKey = 108;
+
 	switch(event)
 	{
 		case FL_KEYDOWN:
-			
-			if(Fl::event_key() == FL_Up)
-			{	//note that the snake cannot reverse directions (eat itself)
-				if(this->direction != "DOWN" && buffer.size() < maxBufferSize)
-				{
-					buffer.push("UP"); //add player input to input buffer
-				}
-				return 1;
-			}
-			else if(Fl::event_key() == FL_Down)
-			{
-				if(this->direction != "UP" && buffer.size() < maxBufferSize)
-				{
-					buffer.push("DOWN");
-				}
-				return 1;				
-			}
-			else if(Fl::event_key() == FL_Left)
-			{
-				if(this->direction != "RIGHT" && buffer.size() < maxBufferSize)
-				{
-					buffer.push("LEFT");
-				}
-				return 1;
-			}
-			else if(Fl::event_key() == FL_Right)
-			{
-				if(this->direction != "LEFT" && buffer.size() < maxBufferSize)
-				{
-					buffer.push("RIGHT");
-				}
-				return 1;
-			}
+            if(Fl::event_key() == FL_Up || Fl::event_key() == KKey)
+            {	//note that the snake cannot reverse directions (eat itself)
+                if(this->direction != "DOWN" && buffer.size() < maxBufferSize)
+                {
+                    buffer.push("UP"); //add player input to input buffer
+                }
+                return 1;
+            }
+            else if(Fl::event_key() == FL_Down || Fl::event_key() == JKey)
+            {
+                if(this->direction != "UP" && buffer.size() < maxBufferSize)
+                {
+                    buffer.push("DOWN");
+                }
+                return 1;				
+            }
+            else if(Fl::event_key() == FL_Left || Fl::event_key() == HKey)
+            {
+                if(this->direction != "RIGHT" && buffer.size() < maxBufferSize)
+                {
+                    buffer.push("LEFT");
+                }
+                return 1;
+            }
+            else if(Fl::event_key() == FL_Right || Fl::event_key() == LKey)
+            {
+                if(this->direction != "LEFT" && buffer.size() < maxBufferSize)
+                {
+                    buffer.push("RIGHT");
+                }
+                return 1;
+            }
+
 		default: return Fl_Widget::handle(event);
 	}
 }
